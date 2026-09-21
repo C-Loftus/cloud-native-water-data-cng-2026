@@ -1,0 +1,509 @@
+/* ---------------------------------------------------------------
+   CGS theme — Center for Geospatial Solutions brand palette applied
+   to the water motif used throughout the Geoconnex talk.
+   --------------------------------------------------------------- */
+
+:root {
+  /* --- CGS primary palette (exact brand values) --- */
+  --cgs-green: #46ab9d;     /* Continental Green */
+  --cgs-blue: #2c84b9;      /* Fluvial Blue */
+  --cgs-rayleigh: #86c1e2;  /* Rayleigh Blue */
+  --cgs-cumulus: #c9dee8;   /* Cumulus Gray */
+
+  /* A lightened tint of Continental Green. Brand green is only ~2.5:1 against
+     the dark stage, which is too low for small labels, so annotation text and
+     leader lines use this instead while the shapes they point at stay on-brand. */
+  --cgs-green-light: #7fd4c6;
+
+  /* --- CGS secondary palette --- */
+  --cgs-yellow: #f9c609;    /* Prairie Yellow */
+  --cgs-cream: #fefcf5;     /* Cream */
+  --cgs-slate: #82848b;     /* Slate Gray */
+  --cgs-pavement: #48535b;  /* Pavement Gray */
+
+  /* Shades of Fluvial Blue, used only as the dark stage the palette sits on */
+  --cgs-deep-1: #1d5f86;
+  --cgs-deep-2: #164c6b;
+  --cgs-deep-3: #0e3149;
+
+  /* Semantic aliases — the slide markup and inline SVGs reference these,
+     so the motifs stay identical while the palette underneath changes. */
+  --wtr-abyss: var(--cgs-deep-3);
+  --wtr-deep: var(--cgs-deep-2);
+  --wtr-mid: var(--cgs-blue);
+  --wtr-shallow: var(--cgs-rayleigh);
+  --wtr-foam: var(--cgs-cumulus);
+  --wtr-accent: var(--cgs-green);      /* graphic accent + large text */
+  --wtr-accent-text: var(--cgs-rayleigh); /* accent at small type sizes */
+  --wtr-sand: var(--cgs-yellow);
+  /* High-contrast emphasis — Prairie Yellow, for the one element on a slide
+     that has to pull the eye harder than the green accent does. */
+  --wtr-emphasis: var(--cgs-yellow);
+  --wtr-text: var(--cgs-cream);
+  --wtr-muted: #b4cfdd;                /* Cumulus Gray, dimmed for body copy */
+
+  --slidev-theme-primary: var(--cgs-blue);
+
+  /* District Pro for display type, Aptos for body — with clean sans fallbacks
+     for environments where the licensed brand fonts are not installed. */
+  --cgs-font-display: 'District Pro', 'DistrictPro', 'Aptos', ui-sans-serif, system-ui,
+    'Segoe UI', Helvetica, Arial, sans-serif;
+  --cgs-font-body: 'Aptos', ui-sans-serif, system-ui, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+html.dark,
+html {
+  --slidev-code-background: rgba(14, 49, 73, 0.72);
+}
+
+/* Base slide surface: layered CGS gradients (Fluvial Blue → Continental Green).
+   These live on the slide *container* rather than on .slidev-layout, because
+   global-bottom.vue (the wave motif) is rendered underneath the layout — an
+   opaque .slidev-layout background would hide it. */
+.slidev-slide-content,
+.print-slide-container {
+  background-color: var(--cgs-deep-2) !important;
+  background-image:
+    radial-gradient(120% 90% at 78% -10%, rgba(70, 171, 157, 0.30) 0%, transparent 55%),
+    radial-gradient(110% 80% at 0% 105%, rgba(44, 132, 185, 0.32) 0%, transparent 60%),
+    linear-gradient(165deg, var(--cgs-deep-1) 0%, var(--cgs-deep-2) 45%, var(--cgs-deep-3) 100%);
+}
+
+/* Let the waves show through */
+.slidev-layout {
+  background: transparent !important;
+  color: var(--wtr-text);
+  font-family: var(--cgs-font-body);
+}
+
+.slidev-layout h1,
+.slidev-layout h2,
+.slidev-layout h3 {
+  color: var(--cgs-cream);
+  font-family: var(--cgs-font-display);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+/* Headings are flat Cream — no gradient fill, so titles read at full contrast
+   against the blue stage. */
+.slidev-layout h1 {
+  color: var(--cgs-cream);
+}
+
+.slidev-layout h2 {
+  color: var(--cgs-cumulus);
+}
+
+.slidev-layout a {
+  color: var(--cgs-rayleigh);
+  border-bottom: 1px solid rgba(134, 193, 226, 0.5);
+}
+
+.slidev-layout strong {
+  color: var(--cgs-cream);
+}
+
+.slidev-layout code {
+  color: var(--cgs-cumulus);
+}
+
+.slidev-layout blockquote {
+  border-left: 3px solid var(--cgs-green);
+  background: rgba(70, 171, 157, 0.14);
+}
+
+.slidev-layout table {
+  font-size: 0.92em;
+}
+
+.slidev-layout th {
+  color: var(--cgs-cumulus);
+  border-bottom: 1px solid rgba(201, 222, 232, 0.45) !important;
+}
+
+.slidev-layout td,
+.slidev-layout tr {
+  border-color: rgba(201, 222, 232, 0.20) !important;
+}
+
+/* Bullet markers as little droplets */
+.slidev-layout ul > li::marker {
+  color: var(--cgs-green);
+}
+
+/* Content slides get a short Continental Green rule under the title so each one
+   reads as a section rather than a floating line of text. Centered and
+   full-bleed slides opt out — the rule only makes sense against a left edge. */
+.slidev-layout.default h1::after,
+.slidev-layout.cover h1::after {
+  content: '';
+  display: block;
+  width: 3.25rem;
+  height: 3px;
+  margin-top: 0.6rem;
+  border-radius: 2px;
+  background: var(--cgs-green);
+}
+
+.slidev-layout.text-center h1::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Slides whose title already sits against a strong visual anchor don't need the
+   rule as well — opt out with `class: no-title-rule` in the slide frontmatter. */
+.slidev-layout.no-title-rule h1::after {
+  content: none;
+}
+
+/* Click-revealed content rises into place instead of popping. Slidev already
+   animates the opacity; this adds the travel and a matching easing curve. */
+.slidev-vclick-target {
+  transition:
+    opacity 320ms cubic-bezier(0.22, 0.68, 0.32, 1),
+    transform 320ms cubic-bezier(0.22, 0.68, 0.32, 1);
+}
+
+.slidev-vclick-hidden {
+  transform: translateY(10px);
+}
+
+@media print, (prefers-reduced-motion: reduce) {
+  .slidev-vclick-target {
+    transition: none;
+  }
+
+  .slidev-vclick-hidden {
+    transform: none;
+  }
+}
+
+/* --- Reusable helpers used throughout slides.md --------------- */
+
+.card {
+  border: 1px solid rgba(201, 222, 232, 0.28);
+  border-radius: 0.75rem;
+  background: rgba(22, 76, 107, 0.55);
+  backdrop-filter: blur(2px);
+  padding: 0.9rem 1rem;
+  line-height: 1.5;
+  /* A one-pixel top highlight reads as a light source above the stage, which is
+     what separates the card from the background without a heavier border. */
+  box-shadow: inset 0 1px 0 rgba(201, 222, 232, 0.1);
+}
+
+.card-accent {
+  border-color: rgba(70, 171, 157, 0.65);
+  background: rgba(29, 95, 134, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(201, 222, 232, 0.12),
+    0 0 30px -10px rgba(70, 171, 157, 0.9);
+}
+
+/* A card deliberately pushed back — the "before" column of a comparison, where
+   the eye should land on the "after" instead. */
+.card.muted {
+  background: rgba(14, 49, 73, 0.42);
+  border-color: rgba(201, 222, 232, 0.16);
+  box-shadow: none;
+}
+
+/* A recessed panel that groups a set of cards. It sits a shade darker than the
+   stage so the cards inside read as raised, and a Continental Green rule on the
+   left marks the group as an aside rather than another row of content. */
+.callout {
+  border: 1px solid rgba(70, 171, 157, 0.35);
+  border-left: 3px solid var(--cgs-green);
+  border-radius: 0.75rem;
+  background: rgba(14, 49, 73, 0.55);
+  box-shadow: inset 0 1px 0 rgba(201, 222, 232, 0.08);
+  padding: 1rem;
+}
+
+/* Prairie Yellow carries the warning through the border and eyebrow only — any
+   warm fill over the blue stage turns olive, so the surface stays on-palette. */
+.card-warn {
+  border-color: rgba(249, 198, 9, 0.6);
+  background: rgba(22, 76, 107, 0.6);
+}
+
+/* A dashed boundary that marks everything inside it as running in one place —
+   the containerized job. Dashed rather than solid so it reads as an enclosure
+   around the steps rather than as another card competing with them, and the
+   label straddles the top edge the way a fieldset legend does. */
+.env-frame {
+  position: relative;
+  border: 1.5px dashed rgba(134, 193, 226, 0.5);
+  border-radius: 0.9rem;
+  background: rgba(14, 49, 73, 0.35);
+  padding: 1.5rem 1.1rem 1.1rem;
+}
+
+.env-frame-label {
+  position: absolute;
+  top: 0;
+  left: 1.2rem;
+  transform: translateY(-50%);
+  /* The stage colour behind the label so the dashed rule appears to break for it. */
+  background: var(--wtr-abyss);
+  border-radius: 0.4rem;
+  padding: 0.15rem 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--wtr-accent-text);
+}
+
+/* A numbered step inside the pipeline frame: the ordinal sits in its own tile so
+   the eye can count the stages before reading any of them. */
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  border-radius: 0.4rem;
+  background: rgba(70, 171, 157, 0.2);
+  border: 1px solid rgba(70, 171, 157, 0.55);
+  font-family: var(--cgs-font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--cgs-green-light);
+}
+
+/* Statement slides carry a full-sentence heading rather than a short title.
+   Dial the display size back and cap the measure so it wraps to two readable
+   lines instead of shouting across the full slide width. */
+.slidev-layout.statement h1 {
+  font-size: 2.05rem;
+  line-height: 1.22;
+  max-width: 44rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* The one-phrase payoff on a statement slide — Prairie Yellow, display face,
+   with a soft rule underneath so it reads as a beat rather than body copy. */
+.punchline {
+  display: inline-block;
+  font-family: var(--cgs-font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--wtr-emphasis);
+  border-bottom: 3px solid rgba(249, 198, 9, 0.45);
+  padding-bottom: 0.15rem;
+}
+
+/* Title-slide byline sits directly over the wave motif — a translucent
+   panel keeps the name and affiliation legible against the bands underneath. */
+.byline {
+  border-radius: 0.6rem;
+  background: rgba(14, 49, 73, 0.62);
+  backdrop-filter: blur(3px);
+  padding: 0.7rem 0.95rem;
+  line-height: 1.6;
+}
+
+/* Line icons that sit to the left of a card's text. Continental Green keeps them
+   reading as accents rather than competing with the copy. `flex: none` stops the
+   flex row from squashing them when the text wraps. */
+.card-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  flex: none;
+  margin-top: 0.15rem;
+  fill: none;
+  stroke: var(--cgs-green);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Format logos sitting beside a heading. Both marks are drawn for light
+   backgrounds — FlatGeobuf's is near-black navy (#1b1464), which all but
+   disappears on the dark stage — so they sit on a Cream tile instead of being
+   recolored. That keeps each logo in its own brand colors at full contrast.
+
+   A fixed square tile with `object-fit: contain` keeps the two marks the same
+   visual weight even though FlatGeobuf's is portrait and Parquet's is square. */
+.format-logo {
+  width: 3.7rem;
+  height: 3.7rem;
+  box-sizing: border-box;
+  object-fit: contain;
+  padding: 0.5rem;
+  border-radius: 0.55rem;
+  background: var(--cgs-cream);
+  box-shadow: 0 2px 12px -5px rgba(0, 0, 0, 0.55);
+}
+
+/* Agency marks in the pipeline slide's first step. Every one of these is drawn
+   for a light page — EPA's blue wordmark, USGS's green one, and Reclamation's
+   shield arriving as an opaque-white JPEG — so they sit on a Cream tile rather
+   than being recolored or knocked out, the same treatment the format logos get.
+   A fixed height with `object-fit: contain` levels marks whose aspect ratios run
+   from a 3:1 wordmark to a portrait seal. */
+.agency-logo {
+  box-sizing: content-box;
+  height: 1.6rem;
+  width: auto;
+  object-fit: contain;
+  padding: 0.3rem 0.45rem;
+  border-radius: 0.4rem;
+  background: var(--cgs-cream);
+  box-shadow: 0 2px 10px -6px rgba(0, 0, 0, 0.6);
+}
+
+/* A product screenshot shown on its own. The rounded corners and the shadow
+   lift it off the stage so it reads as a framed window into the app rather than
+   as the slide's own background. */
+.screenshot {
+  border-radius: 0.9rem;
+  border: 1px solid rgba(201, 222, 232, 0.28);
+  box-shadow: 0 18px 48px -18px rgba(0, 0, 0, 0.75);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  color: var(--wtr-accent-text);
+  font-weight: 600;
+}
+
+/* An eyebrow doing subtitle duty directly under a slide title. At 0.7rem both
+   Rayleigh Blue and the dimmed Cumulus sit too close to the stage to carry to
+   the back of a room, so this variant takes Cream at a touch more size and
+   weight. Declared after `.eyebrow` so it wins on equal specificity. */
+.eyebrow-strong {
+  color: var(--wtr-text);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.muted {
+  color: var(--wtr-muted);
+}
+
+.stat-num {
+  font-family: var(--cgs-font-display);
+  font-size: 2rem;
+  line-height: 1.1;
+  font-weight: 700;
+  color: var(--cgs-cumulus);
+  font-variant-numeric: tabular-nums;
+}
+
+.pipe-box {
+  border: 1px solid rgba(201, 222, 232, 0.3);
+  border-radius: 0.6rem;
+  background: rgba(22, 76, 107, 0.6);
+  box-shadow: inset 0 1px 0 rgba(201, 222, 232, 0.1);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.9rem;
+  text-align: center;
+  min-width: 6.6rem;
+}
+
+/* Continental Green, matching the "after" cards it points at, so the eye follows
+   the direction of the change rather than reading the arrow as neutral chrome. */
+.pipe-arrow {
+  color: var(--cgs-green);
+  align-self: center;
+}
+
+/* A registry / destination row: icon on the left, label beside it. Used where a
+   list of targets reads better as a stack of chips than as a bulleted list. */
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border: 1px solid rgba(201, 222, 232, 0.26);
+  border-radius: 0.6rem;
+  background: rgba(22, 76, 107, 0.55);
+  box-shadow: inset 0 1px 0 rgba(201, 222, 232, 0.1);
+  padding: 0.5rem 0.85rem;
+  font-size: 0.95rem;
+}
+
+.chip svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  fill: none;
+  stroke: var(--cgs-green);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* An inline code-ish label used on a diagram arrow. */
+.arrow-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+  color: var(--wtr-accent-text);
+  border: 1px solid rgba(134, 193, 226, 0.35);
+  border-radius: 0.4rem;
+  background: rgba(14, 49, 73, 0.6);
+  padding: 0.2rem 0.5rem;
+  white-space: nowrap;
+}
+
+/* Keep code blocks legible on the dark CGS background */
+.slidev-layout .shiki,
+.slidev-layout pre {
+  border: 1px solid rgba(201, 222, 232, 0.22);
+  border-radius: 0.6rem;
+  background-color: rgba(14, 49, 73, 0.75) !important;
+}
+
+.slidev-layout .slidev-code {
+  font-size: 0.82em;
+}
+
+/* Long string literals (the full object-storage URLs) would otherwise be clipped
+   by the code block's horizontal overflow — wrap them instead of hiding them. */
+.slidev-layout .slidev-code .line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* The iframe demo slide runs edge to edge (base .slidev-layout has px-14 py-10) */
+.slidev-layout.full {
+  padding: 0 !important;
+}
+
+.slidev-layout iframe {
+  background: var(--cgs-deep-3);
+}
+
+/* Keep slide content clear of the CGS logo lockup in the bottom-right corner */
+.slidev-layout:not(.full) {
+  padding-bottom: 3.25rem;
+}
+
+/* global-bottom.vue hides the lockup via the slide's `hideLogo` frontmatter, but
+   that reads the live nav state, which does not resolve per page during export.
+   In print mode the layer is nested inside each page, so hide it there by layout. */
+.print-slide-container:has(.slidev-layout.full) .cgs-mark {
+  display: none;
+}
+
+/* QR code on the closing slide. Like the format logos, the code is drawn in
+   black and would vanish on the dark stage, so it sits on a Cream tile with
+   the quiet zone supplied by the padding. */
+.qr-code {
+  width: 7.5rem;
+  height: 7.5rem;
+  box-sizing: border-box;
+  padding: 0.4rem;
+  border-radius: 0.55rem;
+  background: var(--cgs-cream);
+  box-shadow: 0 2px 12px -5px rgba(0, 0, 0, 0.55);
+}
