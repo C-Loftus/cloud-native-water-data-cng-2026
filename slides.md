@@ -17,8 +17,10 @@ mdc: true
 drawings:
   persist: false
 duration: 10min
-class: text-center
+class: text-center river-cover
 ---
+
+<img src="/river-network.svg" alt="" aria-hidden="true" class="river-network" />
 
 # Improving Water Data Access with Cloud Native Geospatial Formats
 
@@ -131,7 +133,7 @@ class: text-center
       <line x1="8.3" y1="10.7" x2="15.7" y2="6.8"/>
       <line x1="8.3" y1="13.3" x2="15.7" y2="17.2"/>
     </svg>
-    <div>Present to partners at the US Geological Survey without copying huge files or managing subsets</div>
+    <div>Present to hydrologists without copying huge files or managing subsets</div>
   </div>
 
   <div class="card flex items-start gap-3">
@@ -317,7 +319,7 @@ class: text-center
     <div class="pipe-arrow text-2xl leading-none">&uarr;</div>
     <div class="chip">
       <img src="/fgb.svg" alt="" style="width:1.5rem;height:1.5rem;flex:none;object-fit:contain;padding:0.18rem;border-radius:0.3rem;background:var(--cgs-cream)" />
-      <span>Flowlines &amp; catchments on object storage</span>
+      <span>Flowlines &amp; catchments stored as fgb</span>
     </div>
   </div>
 </div>
@@ -362,7 +364,7 @@ hideLogo: true
 </div>
 ---
 
-# Next Step: utilizing OCI artifacts
+# Tracking provenance with OCI artifacts
 
 <div class="text-lg mt-2 max-w-4xl">
 OCI Artifacts are already utilized in the ML space for tracking models. 

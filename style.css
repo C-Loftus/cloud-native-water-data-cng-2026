@@ -299,6 +299,33 @@ html {
   padding-bottom: 0.15rem;
 }
 
+/* Title-slide river network — a decorative drainage pattern behind the title.
+   Masked so it is strongest at the slide edges, fades out behind the centered
+   title, and dissolves into the wave bands along the bottom. */
+.river-network {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
+  -webkit-mask-image:
+    radial-gradient(ellipse 46% 34% at 50% 47%, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 45%, #000 100%),
+    linear-gradient(to bottom, #000 62%, transparent 96%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(ellipse 46% 34% at 50% 47%, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.12) 45%, #000 100%),
+    linear-gradient(to bottom, #000 62%, transparent 96%);
+  mask-composite: intersect;
+}
+
+/* Lift the title above the network (the byline is already positioned). */
+.slidev-layout.river-cover h1 {
+  position: relative;
+  z-index: 1;
+}
+
 /* Title-slide byline sits directly over the wave motif — a translucent
    panel keeps the name and affiliation legible against the bands underneath. */
 .byline {
